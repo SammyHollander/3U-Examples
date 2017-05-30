@@ -13,24 +13,23 @@ import java.awt.event.MouseEvent;
  *
  * @author holls9719
  */
-public class JavaDrawing extends JComponent {
+public class DrawingExample extends JComponent {
 
     // Height and Width of our game
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
-
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
-
-
     // GAME VARIABLES WOULD GO HERE
-
-
+    int packmanX  = 50;
+    //pos +1 = right
+    //neg -1 = left
+    int packmanDirection = 1;
+    
 
     // GAME VARIABLES END HERE   
-
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -39,48 +38,27 @@ public class JavaDrawing extends JComponent {
         // always clear the screen first!
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
-        // GAME DRAWING GOES HERE
-        
-        //hero's
-        //set the colour to blue
-        g.setColor(Color.BLUE);
-        g.fillRect(50,50,10,10);
-        g.fillRect(60,50,10,10);
-        g.fillRect(70,50,10,10);
-        g.fillRect(80,50,10,10);
-        g.fillRect(90,50,10,10);
-        g.fillRect(100,50,10,10);
-        g.fillRect(110,50,10,10);
-        g.fillRect(120,50,10,10);
-        g.fillRect(120,60,10,10);
-        g.fillRect(50,60,10,10);
-        
-        //top row of hat
-        g.fillRect(60,40,10,10);
-        g.fillRect(70,40,10,10);
-        g.fillRect(80,40,10,10);
-        g.fillRect(90,40,10,10);
-        g.fillRect(100,40,10,10);
-        g.fillRect(110,40,10,10);
-        
-        //set color to cyan for his hair
-        g.setColor(Color.CYAN);
-        g.fillRect(60,60,10,10);
-        g.fillRect(70,60,10,10);
-        g.fillRect(80,60,10,10);
-        g.fillRect(90,60,10,10);
-        g.fillRect(100,60,10,10);
-        g.fillRect(110,60,10,10);
-        
+        // GAME DRAWING GOES HERE 
+        g.drawLine(200, 100, 400, 500);
+        g.setColor(Color.red);
+        g.fillOval(200, 100, 100, 50);
+
+        //drawing a triangle
+        int[] xpoints = {500, 750, 700};
+        int[] ypoints = {375, 300, 100};
+        g.fillPolygon(xpoints, ypoints, 3);
+
+        //packman 
+        g.setColor(Color.YELLOW);
+        g.fillArc(packmanX, 500, 75, 75, 45, 270);
+
         // GAME DRAWING ENDS HERE
     }
 
-
     // This method is used to do any pre-setup you might need to do
     // This is run before the game loop begins!
-    public void  preSetup(){
-       // Any of your pre setup before the loop starts should go here
-
+    public void preSetup() {
+        // Any of your pre setup before the loop starts should go here
     }
 
     // The main game loop
@@ -101,7 +79,14 @@ public class JavaDrawing extends JComponent {
             startTime = System.currentTimeMillis();
 
             // all your game rules and move is done in here
-            // GAME LOGIC STARTS HERE 
+            // GAME LOGIC STARTS HERE
+            if(packmanX>WIDTH - 75){
+            packmanDirection = -1;
+            }
+            if(packmanX<0){
+                packmanDirection =1;
+            }
+            packmanX = packmanX+ 5*packmanDirection;
             // GAME LOGIC ENDS HERE 
             // update the drawing (calls paintComponent)
             repaint();
@@ -130,7 +115,7 @@ public class JavaDrawing extends JComponent {
         JFrame frame = new JFrame("My Game");
 
         // creates an instance of my game
-        JavaDrawing game = new JavaDrawing();
+        DrawingExample game = new DrawingExample();
         // sets the size of my game
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // adds the game to the window
@@ -142,11 +127,11 @@ public class JavaDrawing extends JComponent {
         frame.pack();
         // shows the window to the user
         frame.setVisible(true);
-        
+
         // add listeners for keyboard and mouse
         frame.addKeyListener(new Keyboard());
         game.addMouseListener(new Mouse());
-        
+
         // starts the game loop
         game.run();
     }
@@ -154,36 +139,33 @@ public class JavaDrawing extends JComponent {
     // Used to implement any of the Mouse Actions
     private static class Mouse extends MouseAdapter {
         // if a mouse button has been pressed down
+
         @Override
-        public void mousePressed(MouseEvent e){
-            
+        public void mousePressed(MouseEvent e) {
         }
-        
+
         // if a mouse button has been released
         @Override
-        public void mouseReleased(MouseEvent e){
-            
+        public void mouseReleased(MouseEvent e) {
         }
-        
+
         // if the mouse has moved positions
         @Override
-        public void mouseMoved(MouseEvent e){
-            
+        public void mouseMoved(MouseEvent e) {
         }
     }
-    
+
     // Used to implements any of the Keyboard Actions
-    private static class Keyboard extends KeyAdapter{
+    private static class Keyboard extends KeyAdapter {
         // if a key has been pressed down
+
         @Override
-        public void keyPressed(KeyEvent e){
-            
+        public void keyPressed(KeyEvent e) {
         }
-        
+
         // if a key has been released
         @Override
-        public void keyReleased(KeyEvent e){
-            
+        public void keyReleased(KeyEvent e) {
         }
     }
 }
